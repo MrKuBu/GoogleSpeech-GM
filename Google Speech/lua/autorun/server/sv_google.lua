@@ -2,7 +2,7 @@ local goospeech = goospeech
 local ipairs = ipairs
 local string_sub, string_len, hook_Add = string.sub, string.len, hook.Add
 local timer_Simple = timer.Simple
-local net_Start, net_Send, net_ReadString = net.Start, net.Send, net.ReadString
+local net_Start, net_Send, net_ReadString, net_Receive = net.Start, net.Send, net.ReadString, net.Receive
 
 hook_Add("PlayerSay", "PlayerSay_Google", function(ply, text)
 	for _, cmd in ipairs(goospeech.ChatCommand) do
@@ -15,7 +15,7 @@ hook_Add("PlayerSay", "PlayerSay_Google", function(ply, text)
 	end
 end)
 
-net.Receive("goospeech.end", function(len, ply)
+net_Receive("goospeech.end", function(len, ply)
 	goospeech:SetVoice(ply, net_ReadString())
 end)
 
@@ -28,7 +28,7 @@ hook_Add("PlayerInitialSpawn", "goospeech.initialSpawn", function(ply)
 	end)
 end)
 
-net.Receive("goospeech.SyncVars_client", function(len, ply)
+net_Receive("goospeech.SyncVars_client", function(len, ply)
 	if !IsValid(ply) then return end
 	goospeech:SetVoice(ply, net_ReadString())
 end)

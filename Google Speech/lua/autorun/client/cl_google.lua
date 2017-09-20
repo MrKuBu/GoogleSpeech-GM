@@ -3,6 +3,8 @@ local string_gsub, string_format, string_len, Color = string.gsub, string.format
 local sound_PlayURL, chat_AddText, IsValid, ipairs = sound.PlayURL, chat.AddText, IsValid, ipairs
 local ScrW, ScrH, LocalPlayer, hook_Add, string_byte = ScrW, ScrH, LocalPlayer, hook.Add, string.byte
 local vgui_Create = vgui.Create
+local net_Start, net_WriteString, net_SendToServer = net.Start, net.WriteString, net.SendToServer
+local RunConsoleCommand, net_Receive = RunConsoleCommand, net.Receive
 
 local GoogleBool = CreateClientConVar("cl_google_enabled", "1", true)
 local GoogleInWorld = CreateClientConVar("cl_google_enabled_3d", "0", true)
@@ -57,7 +59,7 @@ end
 
 
 local menu
-net.Receive("goospeech.start", function(len)
+net_Receive("goospeech.start", function(len)
 	if IsValid(menu) then menu:Remove() end
 	
 	local w, h = ScrW(), ScrH()
@@ -84,9 +86,9 @@ net.Receive("goospeech.start", function(len)
 		for _, add in ipairs(voices) do
 			if data == add.ru_name then
 				local name = add.en_name
-				net.Start("goospeech.end")
-				net.WriteString(name)
-				net.SendToServer()
+				net_Start("goospeech.end")
+				net_WriteString(name)
+				net_SendToServer()
 				RunConsoleCommand("cl_google_voice", name)
 			end
 		end
@@ -99,8 +101,8 @@ net.Receive("goospeech.start", function(len)
 	sgs:CheckBox("Enable 3D google speech?", "cl_google_enabled_3d")
 end)
 
-net.Receive("goospeech.SyncVars_server", function(len)
-	net.Start("goospeech.SyncVars_client")
-	net.WriteString(GoogleVoice:GetString())
-	net.SendToServer()
+net_Receive("goospeech.SyncVars_server", function(len)
+	net_Start("goospeech.SyncVars_client")
+	net_WriteString(GoogleVoice:GetString())
+	net_SendToServer()
 end)
