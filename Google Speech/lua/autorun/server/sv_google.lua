@@ -4,6 +4,11 @@ local string_sub, string_len, hook_Add = string.sub, string.len, hook.Add
 local timer_Simple = timer.Simple
 local net_Start, net_Send, net_ReadString, net_Receive = net.Start, net.Send, net.ReadString, net.Receive
 
+util.AddNetworkString("goospeech.start")
+util.AddNetworkString("goospeech.SyncVars_server")
+util.AddNetworkString("goospeech.SyncVars_client")
+util.AddNetworkString("goospeech.end")
+
 hook_Add("PlayerSay", "PlayerSay_Google", function(ply, text)
 	for _, cmd in ipairs(goospeech.ChatCommand) do
 		if string_len(cmd) > 0 and string_sub(text, 0, string_len(cmd)) == cmd then
