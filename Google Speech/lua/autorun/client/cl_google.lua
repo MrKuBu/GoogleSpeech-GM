@@ -23,7 +23,7 @@ hook_Add("OnPlayerChat", "OnPlayerChat_Google", function(ply, text, teamchat, de
 	if !IsValid(ply) or !GoogleBool:GetBool() then return end
 	
 	if goospeech:HasValue(ply) then
-		local encode = string_format("http://tts.voicetech.yandex.net/tts?speaker=%s&text=%s", goospeech:GetVoice(ply), httpUrlEncode(text))
+		local encode = string_format("http://translate.google.com/translate_tts?ie=UTF-8&tl=ru&client=tw-ob&q=%s", httpUrlEncode(text))
 		local flag = "mono"
 		if GoogleInWorld:GetBool() then
 			flag = "3D"
